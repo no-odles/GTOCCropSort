@@ -5,14 +5,20 @@ local tr = component.transposer
 local db = require("database")
 local config = require("config")
 local sc = require("score")
+local tslot = 0
+
+local function getTSlot()
+    tslot = (tslot + 1) % 64
+    return tslot + 2 -- slots 2-65 are valid destinations
+end
 
 local function deleteFromSource(slot)
-    local ntransferred = tr.transferItem(config.source_side, config.trash_side, 64, slot, 1)
+    local ntransferred = tr.transferItem(config.source_side, config.trash_side, 64, slot, getTSlot())
     return ntransferred ~= 0
 end
 
 local function deleteFromStorage(name, slot, no_update)
-    local ntransferred = tr.transferItem(config.seed_store_side, config.trash_side, 64, slot, 1)
+    local ntransferred = tr.transferItem(config.seed_store_side, config.trash_side, 64, slot, getTSlot())
     if not no_update then
         db.incN(name, -ntransferred) -- does not update worst(), need to call cleanAll for that
     end
