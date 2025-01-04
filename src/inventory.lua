@@ -50,11 +50,9 @@ local function storeInInv(slot, item_stack)
     local store = false
     local name, score = sc.evalCrop(item_stack)
 
-    local n, worst, best
-    local db_entry = db.getEntry(name)
+    local n, worst, best = db.getEntry(name)
 
-    if db_entry ~= nil then
-        n, worst, best = table.unpack(db_entry)
+    if n ~= nil then
         if best - score <= config.score_fuzziness then -- best - score being negative is ok
             store = true
         end

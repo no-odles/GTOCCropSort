@@ -78,7 +78,7 @@ local function keyNeedsCleaning(key)
 end
 
 local function needsCleaning()
-    local needs_cleaning
+    local needs_cleaning = {}
     for k,v in pairs(db) do
         local _, best, worst = table.unpack(v)
         needs_cleaning[k] = best - worst > config.score_fuzziness
