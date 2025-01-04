@@ -7,14 +7,14 @@ local inv = require("inventory")
 
 local ctr = 0
 
-if ~inv.initDB() then
+if not inv.initDB() then
     return
 end
 
 while true do
     local success, transferred = inv.dumpInv()
 
-    if ~success then
+    if not success then
         break
     end
 

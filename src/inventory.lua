@@ -84,7 +84,7 @@ local function dumpInv()
 
         success = storeInInv(i, stack)
 
-        if ~success then
+        if not success then
             print("unable to store item!")
             success = false
             break
@@ -132,7 +132,7 @@ local function cleanAll()
                 i = i - 1 -- the relative position of everything is shifted by one
             end
 
-            if ~success then
+            if not success then
                 print("unable to delete item!")
                 return false
             end
@@ -196,7 +196,7 @@ local function initDB()
             i = i - 1 -- the relative position of everything is shifted by one
         end
 
-        if ~success then
+        if not success then
             print("Unable to delete item during init!")
             return false
         end
