@@ -5,7 +5,7 @@ local config = {
     max_growth = 23,
     source_side = sides.south,
     seed_store_side = sides.north,
-    trash_side = sides.east,
+    trash_side = sides.west,
     score_fuzziness = 1,
     max_dirty_cycles = 10
 }

@@ -72,13 +72,13 @@ local function dumpInv()
     print("Emptying inventory!")
     local success = true
     local transferred = false
-    local stack
 
-    local nslots = tr.getInventorySize(config.source_side)
-    for i = 1,nslots do
-        
-        stack = tr.getStackInSlot(config.source_side, i)
-        if stack == nil then
+    local slots = tr.getAllStacks(config.source_side).getAll()
+
+
+    local i = 1
+    for k, stack in pairs(slots) do
+        if stack.crop == nil then
             break
         end
 
@@ -105,14 +105,13 @@ local function cleanAll()
     local worsts = {}
     local needs_cleaning = db.needsCleaning()
 
-    local nslots = tr.getInventorySize(config.seed_store_side)
-    local stack, name, score, keep, worst
+    local slots = tr.getAllStacks(config.seed_store_side).getAll()
+
+    local name, score, keep, worst
 
     local i = 1
-    while i < nslots do
-        
-        stack = tr.getStackInSlot(config.seed_store_side, i)
-        if stack == nil then
+    for k, stack in pairs(slots) do
+        if stack.crop == nil then
             break
         end
 
@@ -164,13 +163,13 @@ local function initDB()
     local i = 1
     for k, stack in pairs(slots) do
         
-        if stack == nil then
+        if stack.crop == nil then
             break
         end
 
         name, score = sc.evalCrop(stack)
 
-        best = bests{name}
+        best = bests[name]
 
         if best ==  nil or score > best then
             bests[name] = score

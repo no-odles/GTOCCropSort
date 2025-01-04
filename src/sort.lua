@@ -7,7 +7,7 @@ local inv = require("inventory")
 
 local ctr = 0
 
-if ~db.initDB() then
+if ~inv.initDB() then
     return
 end
 
