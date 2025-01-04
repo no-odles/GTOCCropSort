@@ -1,0 +1,33 @@
+
+local os = require("os")
+
+local config = require("config")
+local inv = require("inventory_lowmem")
+
+local ctr = 0
+
+if not inv.initDB() then
+    return
+end
+
+while true do
+    local success, transferred = inv.dumpInv()
+
+    if not success then
+        break
+    end
+
+    if transferred == false then
+        inv.cleanAll()
+        ctr = 0
+
+    elseif ctr > config.max_dirty_cycles then
+        inv.cleanAll()
+        ctr = 0
+    else
+        ctr = ctr + 1
+    end
+
+
+    os.sleep(5)
+end
