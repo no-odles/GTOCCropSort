@@ -79,12 +79,12 @@ local function dumpInv()
 
     -- local slots = tr.getAllStacks(config.source_side).getAll()
 
-    local nslots = tr.getInventorySize(config.seed_store_side)
+    local nslots = tr.getInventorySize(config.source_side)
     local stack
 
     local i = 1
     while i <= nslots do
-        stack = tr.getStackInSlot(config.seed_store_side, i)
+        stack = tr.getStackInSlot(config.source_side, i)
        
         if stack  == nil or stack.crop == nil then
             break
