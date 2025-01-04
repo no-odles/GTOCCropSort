@@ -78,7 +78,7 @@ local function dumpInv()
 
     local i = 1
     for k, stack in pairs(slots) do
-        if stack.crop == nil then
+        if stack.crop == nil or stack.crop.name == nil then
             break
         end
 
@@ -111,7 +111,7 @@ local function cleanAll()
 
     local i = 1
     for k, stack in pairs(slots) do
-        if stack.crop == nil then
+        if stack.crop == nil or stack.crop.name == nil then
             break
         end
 
@@ -163,7 +163,7 @@ local function initDB()
     local i = 1
     for k, stack in pairs(slots) do
         
-        if stack.crop == nil then
+        if stack.crop  == nil or stack.crop.name == nil then
             break
         end
 
@@ -171,7 +171,7 @@ local function initDB()
 
         best = bests[name]
 
-        if best ==  nil or score > best then
+        if best == nil or score > best then
             bests[name] = score
         end
 
