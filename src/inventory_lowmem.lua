@@ -86,7 +86,7 @@ local function dumpInv()
     while i <= nslots do
         stack = tr.getStackInSlot(config.seed_store_side, i)
        
-        if stack.crop  == nil or stack.crop.name == nil then
+        if stack  == nil or stack.crop == nil then
             break
         end
 
@@ -123,7 +123,7 @@ local function cleanAll()
     while i <= nslots do
         stack = tr.getStackInSlot(config.seed_store_side, i)
        
-        if stack.crop  == nil or stack.crop.name == nil then
+        if stack  == nil or stack.crop == nil then
             break
         end
 
@@ -179,7 +179,7 @@ local function initDB()
     while i <= nslots do
         stack = tr.getStackInSlot(config.seed_store_side, i)
         
-        if stack.crop  == nil or stack.crop.name == nil then
+        if stack  == nil or stack.crop == nil then
             break
         end
 

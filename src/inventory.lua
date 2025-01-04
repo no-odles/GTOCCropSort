@@ -5,6 +5,7 @@ local tr = component.transposer
 local db = require("database")
 local config = require("config")
 local sc = require("score")
+local tslot = 0
 
 local function getTSlot()
     tslot = (tslot + 1) % 64
