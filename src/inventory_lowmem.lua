@@ -73,7 +73,7 @@ local function storeInInv(slot, item_stack)
     if store then
         print(string.format("Storing %s  with score %d (best %d)", name, score, best))
 
-        return storeAt(slot, score)
+        return storeAt(slot, name, score)
     else
         print(string.format("Deleting %s from storage with score %d (best %d)", name, score, best))
         return deleteFromSource(slot)
