@@ -59,6 +59,7 @@ local function storeInInv(slot, item_stack)
     local n, worst, best = db.getEntry(name)
 
     if n == nil or n < config.min_to_keep then
+        best = -1
         store = true
     elseif best - score <= config.score_fuzziness then -- best - score being negative is ok
         store = true
@@ -66,8 +67,11 @@ local function storeInInv(slot, item_stack)
     end
     
     if store then
+        print(string.format("Storing %s  with score %d (best %d)", name, score, best))
+
         return storeAt(slot, score)
     else
+        print(string.format("Deleting %s from storage with score %d (best %d)", name, score, best))
         return deleteFromSource(slot)
     end
 end
@@ -146,6 +150,7 @@ local function cleanAll()
                 end
 
             else
+                print(string.format("Deleting %s from storage with score %d (best %d)", name, score, bests[name]))
                 success = deleteFromStorage(name, i)
                 i = i - 1 -- the relative position of everything is shifted by one
             end
@@ -217,6 +222,7 @@ local function initDB()
             end
 
         else
+            print(string.format("Deleting %s from storage with score %d (best %d)", name, score, bests[name]))
             success = deleteFromStorage(name, i, true)
             i = i - 1 -- the relative position of everything is shifted by one
         end
