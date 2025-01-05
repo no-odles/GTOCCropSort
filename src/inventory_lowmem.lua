@@ -31,8 +31,12 @@ local function storeAt(slot, name, score)
     local ntransferred = tr.transferItem(config.source_side, config.seed_store_side, 64, slot, out_slot)
 
     local n, worst, best = db.getEntry(name)
-
+    print(name, n, worst, best)
     if n == nil then
+        n = 0
+        best = score
+        worst = score
+    elseif best == nil then
         n = 0
         best = score
         worst = score

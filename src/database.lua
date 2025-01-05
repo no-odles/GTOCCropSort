@@ -68,10 +68,7 @@ local function initDB(ns, worsts, bests)
     db = {}
     for k,n in pairs(ns) do
         db[k] = {n, worsts[k], bests[k]}
-        if worsts[k] == nil or bests[k] == nil then
-            
-            print(k, {n, worsts[k], bests[k]})
-        end
+
     end
 end
 
