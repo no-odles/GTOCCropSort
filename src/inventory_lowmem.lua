@@ -196,11 +196,6 @@ local function initDB()
         name, score = sc.evalCrop(stack)
 
         best = bests[name]
-
-        if best == nil or score > best then
-            bests[name] = score
-        end
-
         n = ns[name]
 
         low_number = n == nil or n <= config.min_to_keep
@@ -212,6 +207,10 @@ local function initDB()
             worst = worsts[name]
             if worst == nil or worst > score then
                 worsts[name] = score
+            end
+
+            if best == nil or score > best then
+                bests[name] = score
             end
 
             
