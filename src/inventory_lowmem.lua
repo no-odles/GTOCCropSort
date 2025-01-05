@@ -100,7 +100,7 @@ local function dumpInv()
         else
             transferred = true
         end
-
+        i = i + 1
     end
 
 

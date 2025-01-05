@@ -72,7 +72,7 @@ local function initDB(ns, worsts, bests)
 end
 
 local function keyNeedsCleaning(key)
-    local _, best, worst = table.unpack(db[key])
+    local _, worst, best = table.unpack(db[key])
 
     return best - worst > config.score_fuzziness
 end
@@ -80,7 +80,7 @@ end
 local function needsCleaning()
     local needs_cleaning = {}
     for k,v in pairs(db) do
-        local _, best, worst = table.unpack(v)
+        local _, worst, best = table.unpack(v)
         needs_cleaning[k] = best - worst > config.score_fuzziness
     end
     return needs_cleaning
