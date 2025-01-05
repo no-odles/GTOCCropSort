@@ -96,6 +96,15 @@ local function getBests()
     return bests
 end
 
+local function getNsBests()
+    local ns, bests = {}, {}
+    for k,v in pairs(db) do
+        ns[k], bests[k] = v[1], v[3]
+    end
+    return ns, bests
+
+end
+
 
 
 return {
@@ -113,6 +122,7 @@ return {
     
     initDB=initDB,
     needsCleaning=needsCleaning,
-    getBests=getBests
+    getBests=getBests,
+    getNsBests=getNsBests
 
 }

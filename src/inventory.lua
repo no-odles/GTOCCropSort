@@ -58,7 +58,10 @@ local function storeInInv(slot, item_stack)
 
     local n, worst, best = db.getEntry(name)
 
-    if n ~= nil then
+    if n == nil or n < config.min_to_keep then
+        store = true
+
+    else
         if best - score <= config.score_fuzziness then -- best - score being negative is ok
             store = true
         end
@@ -105,13 +108,13 @@ end
 local function cleanAll()
     print("Cleaning inventory!")
     local success = true
-    local bests = db.getBests()
+    local ns, bests = db.getNsBests()
     local worsts = {}
     local needs_cleaning = db.needsCleaning()
 
     local slots = tr.getAllStacks(config.seed_store_side).getAll()
 
-    local name, score, keep, worst
+    local name, score, keep, worst, n, low_number
 
     local i = 1
     for k, stack in pairs(slots) do
@@ -122,7 +125,11 @@ local function cleanAll()
         if needs_cleaning[stack.crop.name] then
             name, score = sc.evalCrop(stack)
 
-            keep = bests[name] - score <= config.score_fuzziness
+            n = ns[name]
+
+            low_number = n == nil or n <= config.min_to_keep
+
+            keep = low_number or bests[name] - score <= config.score_fuzziness
 
             if keep then
                 -- logic to keep the worsts updated
@@ -162,7 +169,7 @@ local function initDB()
     local ns = {}
 
     local slots = tr.getAllStacks(config.seed_store_side).getAll()
-    local name, score, keep, n, worst, best
+    local name, score, keep, n, worst, best, low_number
 
     local i = 1
     for k, stack in pairs(slots) do
@@ -179,7 +186,11 @@ local function initDB()
             bests[name] = score
         end
 
-        keep = bests[name] - score <= config.score_fuzziness
+        n = ns[name]
+
+        low_number = n == nil or n <= config.min_to_keep
+
+        keep = low_number or bests[name] - score <= config.score_fuzziness
 
         if keep then
             -- update worsts and n
@@ -188,7 +199,6 @@ local function initDB()
                 worsts[name] = score
             end
 
-            n = ns[name]
             if n == nil then
                 ns[name] = stack.size
             else

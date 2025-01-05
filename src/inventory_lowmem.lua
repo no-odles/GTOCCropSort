@@ -58,10 +58,11 @@ local function storeInInv(slot, item_stack)
 
     local n, worst, best = db.getEntry(name)
 
-    if n ~= nil then
-        if best - score <= config.score_fuzziness then -- best - score being negative is ok
-            store = true
-        end
+    if n == nil or n < config.min_to_keep then
+        store = true
+    elseif best - score <= config.score_fuzziness then -- best - score being negative is ok
+        store = true
+
     end
     
     if store then
@@ -110,14 +111,14 @@ end
 local function cleanAll()
     print("Cleaning inventory!")
     local success = true
-    local bests = db.getBests()
+    local ns, bests = db.getNsBests()
     local worsts = {}
     local needs_cleaning = db.needsCleaning()
 
     --local slots = tr.getAllStacks(config.seed_store_side).getAll()
 
     local nslots = tr.getInventorySize(config.seed_store_side)
-    local name, score, keep, worst, stack
+    local name, score, keep, worst, stack, low_number, n
 
     local i = 1
     while i <= nslots do
@@ -131,7 +132,11 @@ local function cleanAll()
         if needs_cleaning[stack.crop.name] then
             name, score = sc.evalCrop(stack)
 
-            keep = bests[name] - score <= config.score_fuzziness
+            n = ns[name]
+
+            low_number = n == nil or n <= config.min_to_keep
+
+            keep = low_number or bests[name] - score <= config.score_fuzziness
 
             if keep then
                 -- logic to keep the worsts updated
@@ -173,7 +178,7 @@ local function initDB()
 
     -- local slots = tr.getAllStacks(config.seed_store_side).getAll()
     local nslots = tr.getInventorySize(config.seed_store_side)
-    local name, score, keep, n, worst, best, stack
+    local name, score, keep, n, worst, best, stack, low_number
 
     local i = 1
     while i <= nslots do
@@ -191,7 +196,11 @@ local function initDB()
             bests[name] = score
         end
 
-        keep = bests[name] - score <= config.score_fuzziness
+        n = ns[name]
+
+        low_number = n == nil or n <= config.min_to_keep
+
+        keep = low_number or bests[name] - score <= config.score_fuzziness
 
         if keep then
             -- update worsts and n
@@ -200,7 +209,7 @@ local function initDB()
                 worsts[name] = score
             end
 
-            n = ns[name]
+            
             if n == nil then
                 ns[name] = stack.size
             else
