@@ -31,12 +31,7 @@ local function storeAt(slot, name, score)
     local ntransferred = tr.transferItem(config.source_side, config.seed_store_side, 64, slot, out_slot)
 
     local n, worst, best = db.getEntry(name)
-    print(name, n, worst, best)
     if n == nil then
-        n = 0
-        best = score
-        worst = score
-    elseif best == nil then
         n = 0
         best = score
         worst = score
@@ -75,7 +70,7 @@ local function storeInInv(slot, item_stack)
 
         return storeAt(slot, name, score)
     else
-        print(string.format("Deleting %s from storage with score %d (best %d)", name, score, best))
+        print(string.format("Deleting %s from input with score %d (best %d)", name, score, best))
         return deleteFromSource(slot)
     end
 end
